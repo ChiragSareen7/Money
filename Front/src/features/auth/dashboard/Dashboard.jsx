@@ -11,10 +11,9 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  // Example financial summaries (replace with actual data from API)
-  const totalIncome = 5000; // Example value
-  const totalExpenses = 3000; // Example value
-  const netIncome = totalIncome - totalExpenses; // Example calculation
+  const totalIncome = 5000; 
+  const totalExpenses = 3000;
+  const netIncome = totalIncome - totalExpenses; 
 
   return (
     <div className="dashboard-container">
