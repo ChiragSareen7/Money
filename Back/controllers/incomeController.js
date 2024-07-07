@@ -28,7 +28,7 @@ const deleteIncome = async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await income.remove();
+    await income.deleteOne();
     res.json({ message: 'Income removed' });
   } else {
     res.status(404).json({ message: 'Income not found' });

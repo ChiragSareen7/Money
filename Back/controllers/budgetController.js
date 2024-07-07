@@ -1,37 +1,43 @@
 const Budget = require('../models/Budget');
 
 const getBudgets = async (req, res) => {
-  const budgets = await Budget.find({ user: req.user._id });
-  res.json(budgets);
+  try {
+    const budgets = await Budget.find({ user: req.user.id });
+    res.json(budgets);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 const addBudget = async (req, res) => {
-  const { amount, category, startDate, endDate } = req.body;
-
-  const budget = new Budget({
-    user: req.user._id,
-    amount,
-    category,
-    startDate,
-    endDate,
-  });
-
-  const createdBudget = await budget.save();
-  res.status(201).json(createdBudget);
+  try {
+    const { category, amount, endDate } = req.body; 
+    const budget = new Budget({
+      user: req.user.id,
+      category,
+      amount,
+      endDate,
+    });
+    await budget.save();
+    res.status(201).json(budget);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
 const deleteBudget = async (req, res) => {
-  const budget = await Budget.findById(req.params.id);
-
-  if (budget) {
-    if (budget.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: 'Not authorized' });
+  try {
+    const budget = await Budget.findById(req.params.id);
+    if (!budget) {
+      return res.status(404).json({ message: 'Budget not found' });
     }
-
-    await budget.remove();
+    if (budget.user.toString() !== req.user.id) {
+      return res.status(401).json({ message: 'User not authorized' });
+    }
+    await budget.deleteOne();
     res.json({ message: 'Budget removed' });
-  } else {
-    res.status(404).json({ message: 'Budget not found' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 

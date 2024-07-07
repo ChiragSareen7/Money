@@ -28,7 +28,7 @@ const deleteGoal = async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await goal.remove();
+    await goal.deleteOne();
     res.json({ message: 'Goal removed' });
   } else {
     res.status(404).json({ message: 'Goal not found' });

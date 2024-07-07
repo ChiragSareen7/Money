@@ -27,7 +27,7 @@ const deleteExpense = async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await expense.remove();
+    await expense.deleteOne();
     res.json({ message: 'Expense removed' });
   } else {
     res.status(404).json({ message: 'Expense not found' });
