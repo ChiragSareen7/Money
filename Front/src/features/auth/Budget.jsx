@@ -68,13 +68,17 @@ const Budget = () => {
     <div>
       <h2>Budget Management</h2>
       <form onSubmit={addBudget}>
-        <input
-          type="text"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
           required
-        />
+        >
+          <option value="" disabled>Select category</option>
+          <option value="Food">Food</option>
+          <option value="Rent">Rent</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Miscellaneous">Miscellaneous</option>
+        </select>
         <input
           type="number"
           value={amount}
@@ -87,9 +91,9 @@ const Budget = () => {
       <ul>
         {budgets.map((budget) => (
           <li key={budget._id}>
-          {budget.category}: ${budget.amount} (Ends: {new Date(budget.endDate).toLocaleDateString()}) 
-          <button onClick={() => deleteBudget(budget._id)}>Delete</button>
-        </li>
+            {budget.category}: ${budget.amount}{' '}
+            <button onClick={() => deleteBudget(budget._id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>

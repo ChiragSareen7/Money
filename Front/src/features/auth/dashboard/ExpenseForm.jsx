@@ -21,12 +21,19 @@ const ExpenseForm = ({ addExpense }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        addExpense(response.data);
+
+        addExpense(response.data.expense);
         setAmount('');
         setCategory('');
         setDescription('');
+
         toast.success('Expense added successfully');
+
+        if (response.data.exceedsBudget) {
+          toast.error(`Expense exceeds budget for category ${category}`);
+        }
       } catch (error) {
+        console.error('Error adding expense:', error);
         toast.error('Failed to add expense');
       }
     } else {
@@ -43,12 +50,16 @@ const ExpenseForm = ({ addExpense }) => {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="Category"
+      <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-      />
+      >
+        <option value="">Select Category</option>
+        <option value="food">Food</option>
+        <option value="rent">Rent</option>
+        <option value="clothes">Clothes</option>
+        <option value="miscellaneous">Miscellaneous</option>
+      </select>
       <input
         type="text"
         placeholder="Description"
@@ -61,3 +72,5 @@ const ExpenseForm = ({ addExpense }) => {
 };
 
 export default ExpenseForm;
+
+
